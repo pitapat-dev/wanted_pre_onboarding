@@ -8,7 +8,7 @@
 import UIKit
 
 class WeatherViewController: UIViewController {
-
+    
     @IBOutlet weak var weatherTableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     var weatherDatas: [WeatherData] = []
@@ -21,25 +21,26 @@ class WeatherViewController: UIViewController {
     }
     
     func setData() {
-        let networkManager = NetworkManager()
-        networkManager.fetchWeather { result in
-            switch result {
-            case .success(let weatherData):
-                self.weatherDatas = weatherData
-                DispatchQueue.main.async {
-                    self.weatherTableView.reloadData()
-                    self.activityIndicator.stopAnimating()
-                    self.activityIndicator.isHidden = true
-                }
-            case .failure(let error):
-                print("Error: \(error.localizedDescription)")
-            }
-        }
+        var networkManager = NetworkManager()
+        networkManager.delegate = self
+        networkManager.fetchWeather()
     }
     
     func setTableView() {
         self.weatherTableView.dataSource = self
         self.weatherTableView.delegate = self
+    }
+    
+    func showAlert(message: String) {
+        let alert = UIAlertController(title: "에러", message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "확인", style: .default, handler: nil)
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func stopAndHideActivityIndicator() {
+        self.activityIndicator.stopAnimating()
+        self.activityIndicator.isHidden = true
     }
 }
 
@@ -71,6 +72,47 @@ extension WeatherViewController: UITableViewDelegate {
         if segue.identifier == "goToDetail" {
             guard let weatherDetailVC = segue.destination as? WeatherDetailViewController, let indexPath = sender as? IndexPath else { return }
             weatherDetailVC.weatherDetail = self.weatherDatas[indexPath.row]
+        }
+    }
+}
+
+extension WeatherViewController: NetworkManagerDelegate {
+    
+    func didFailWithError(_ response: HTTPURLResponse) {
+        switch response.statusCode {
+        case 401:
+            DispatchQueue.main.async {
+                self.showAlert(message: NetworkError.invalidAPIKey.message)
+                self.stopAndHideActivityIndicator()
+            }
+        case 404:
+            DispatchQueue.main.async {
+                self.showAlert(message: NetworkError.invalidQueryParameters.message)
+                self.stopAndHideActivityIndicator()
+            }
+        case 429:
+            DispatchQueue.main.async {
+                self.showAlert(message: NetworkError.surpassingLimitOfAPICalls.message)
+                self.stopAndHideActivityIndicator()
+            }
+        case 500, 502, 503, 504:
+            DispatchQueue.main.async {
+                self.showAlert(message: NetworkError.serverError.message)
+                self.stopAndHideActivityIndicator()
+            }
+        default:
+            DispatchQueue.main.async {
+                self.showAlert(message: "알 수 없는 오류 발생")
+                self.stopAndHideActivityIndicator()
+            }
+        }
+    }
+    
+    func didUpdateWeather(with weatherDatas: [WeatherData]) {
+        self.weatherDatas = weatherDatas
+        DispatchQueue.main.async {
+            self.weatherTableView.reloadData()
+            self.stopAndHideActivityIndicator()
         }
     }
 }

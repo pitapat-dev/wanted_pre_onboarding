@@ -8,20 +8,28 @@
 import Foundation
 
 enum NetworkError: Error {
-    case invalidURL
-    case networkingError
-    case parseError
+    case invalidAPIKey
+    case invalidQueryParameters
+    case surpassingLimitOfAPICalls
+    case serverError
     
     var message: String {
         switch self {
-        case .invalidURL:
-            return "URL을 확인해주세요."
-        case .networkingError:
-            return "네트워크 상태를 확인해주세요."
-        case .parseError:
-            return "데이터 파싱에 실패하였습니다."
+        case .invalidAPIKey:
+            return "API Key가 아직 활성화되지 않았거나 유효하지 않은 API key입니다."
+        case .invalidQueryParameters:
+            return "Query parameter를 다시 확인해주세요."
+        case .surpassingLimitOfAPICalls:
+            return "API 호출 횟수 한도를 초과했습니다."
+        case .serverError:
+            return "Server 에러가 발생했습니다."
         }
     }
+}
+
+protocol NetworkManagerDelegate {
+    func didUpdateWeather(with weatherDatas: [WeatherData])
+    func didFailWithError(_ response: HTTPURLResponse)
 }
 
 struct NetworkManager {
@@ -29,8 +37,8 @@ struct NetworkManager {
     let apiKey = Bundle.main.apiKey
     let queryOption = "units=metric&lang=kr"
     
-    typealias NetworkCompletion = (Result<[WeatherData], NetworkError>) -> Void
-    
+    var delegate: NetworkManagerDelegate?
+  
     func getCityString() -> String {
         var cityArray = [Int]()
         City.allCases.forEach { cityArray.append($0.rawValue) }
@@ -38,34 +46,28 @@ struct NetworkManager {
         return cityString
     }
     
-    func fetchWeather(completion: @escaping NetworkCompletion) {
+    func fetchWeather() {
         let cities = self.getCityString()
         let urlString = "\(weatherURL)&id=\(cities)&appid=\(apiKey)&\(queryOption)"
-        performRequest(with: urlString) { result in
-            completion(result)
-        }
+        performRequest(with: urlString)
     }
     
-    func performRequest(with urlString: String, completion: @escaping NetworkCompletion) {
+    func performRequest(with urlString: String) {
         guard let url = URL(string: urlString)  else { return }
         
         let session = URLSession(configuration: .default)
         
         let task = session.dataTask(with: url) { data, response, error in
             guard let data = data, let response = response as? HTTPURLResponse, error == nil else { return }
-            switch response.statusCode {
-            case 200...299:
-                guard let weatherData = self.parseJSON(data) else { return }
-                completion(.success(weatherData))
-            case 400...499:
-                print("Error: \(NetworkError.invalidURL.message)")
-                completion(.failure(.invalidURL))
-            case 500...599:
-                print("Error: \(NetworkError.networkingError.message)")
-                completion(.failure(.networkingError))
-            default:
-                print("Unknown Error")
-            }
+                switch response.statusCode {
+                case 200:
+                    guard let weatherData = self.parseJSON(data) else { return }
+                    self.delegate?.didUpdateWeather(with: weatherData)
+                case 401, 404, 429, 500, 502, 503, 504:
+                    self.delegate?.didFailWithError(response)
+                default:
+                    print("Error: 알 수 없는 오류 발생")
+                }
         }
         task.resume()
     }
@@ -77,7 +79,7 @@ struct NetworkManager {
             let weatherData = decodedData.list
             return weatherData
         } catch {
-            print("Error : \(NetworkError.parseError.message)")
+            print("Error : \(error.localizedDescription)")
             return nil
         }
     }

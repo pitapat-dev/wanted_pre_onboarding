@@ -23,19 +23,15 @@ extension UIImageView {
             let session = URLSession(configuration: .default)
             let task = session.dataTask(with: url) { data, response, error in
                 guard let data = data, let response = response as? HTTPURLResponse, error == nil else { return }
-                switch response.statusCode {
-                case 200...299:
+                if response.statusCode == 200 {
                     guard let image = UIImage(data: data) else { return }
                     DispatchQueue.main.async() { [weak self] in
                         imageCache.setObject(image, forKey: imageURL as NSString)
                         self?.image = image
                     }
-                case 400...499:
-                    print("Error: \(NetworkError.invalidURL.message)")
-                case 500...599:
-                    print("Error: \(NetworkError.networkingError.message)")
-                default:
-                    print("Unknown Error")
+                } else {
+                    guard let error = error else { return }
+                    print("Error: \(error.localizedDescription)")
                 }
             }
             task.resume()

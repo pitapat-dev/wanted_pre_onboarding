@@ -99,7 +99,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="지역별 날씨" id="Wam-GI-Mcu"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="lch-lD-EY3" id="N7P-xr-zda"/>
+                        <outlet property="activityIndicator" destination="lch-lD-EY3" id="R5S-UD-fqO"/>
                         <outlet property="weatherTableView" destination="B0U-4a-bIr" id="ziB-Qj-97L"/>
                         <segue destination="3PX-t1-DfE" kind="show" identifier="goToDetail" id="Foa-tP-KdL"/>
                     </connections>
