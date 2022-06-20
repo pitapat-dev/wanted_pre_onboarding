@@ -58,4 +58,15 @@ extension WeatherViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70.0
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "goToDetail", sender: indexPath)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToDetail" {
+            guard let weatherDetailVC = segue.destination as? WeatherDetailViewController, let indexPath = sender as? IndexPath else { return }
+            weatherDetailVC.weatherDetail = self.weatherDatas[indexPath.row]
+        }
+    }
 }

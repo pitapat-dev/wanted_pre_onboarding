@@ -21,6 +21,7 @@
 		12584DE22860555000DD71E8 /* WeatherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12584DE12860555000DD71E8 /* WeatherTableViewCell.swift */; };
 		12584DE42860565700DD71E8 /* WeatherDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12584DE32860565700DD71E8 /* WeatherDataManager.swift */; };
 		12584DE6286056A100DD71E8 /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12584DE5286056A100DD71E8 /* UIImageViewExtension.swift */; };
+		12584DF02860848000DD71E8 /* WeatherDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12584DEF2860848000DD71E8 /* WeatherDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		12584DE12860555000DD71E8 /* WeatherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherTableViewCell.swift; sourceTree = "<group>"; };
 		12584DE32860565700DD71E8 /* WeatherDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDataManager.swift; sourceTree = "<group>"; };
 		12584DE5286056A100DD71E8 /* UIImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
+		12584DEF2860848000DD71E8 /* WeatherDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 				12584DDD2860543B00DD71E8 /* BundleExtension.swift */,
 				12584DC52860441900DD71E8 /* Main.storyboard */,
 				12584DD32860444800DD71E8 /* WeatherViewController.swift */,
+				12584DEF2860848000DD71E8 /* WeatherDetailViewController.swift */,
 				12584DE12860555000DD71E8 /* WeatherTableViewCell.swift */,
 				12584DE5286056A100DD71E8 /* UIImageViewExtension.swift */,
 				12584DE32860565700DD71E8 /* WeatherDataManager.swift */,
@@ -172,6 +175,7 @@
 				12584DD42860444800DD71E8 /* WeatherViewController.swift in Sources */,
 				12584DE42860565700DD71E8 /* WeatherDataManager.swift in Sources */,
 				12584DD8286053E300DD71E8 /* City.swift in Sources */,
+				12584DF02860848000DD71E8 /* WeatherDetailViewController.swift in Sources */,
 				12584DC22860441900DD71E8 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
