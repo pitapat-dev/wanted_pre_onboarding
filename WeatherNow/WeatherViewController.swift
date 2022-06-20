@@ -10,12 +10,14 @@ import UIKit
 class WeatherViewController: UIViewController {
 
     @IBOutlet weak var weatherTableView: UITableView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     var weatherDatas: [WeatherData] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setData()
         self.setTableView()
+        self.activityIndicator.startAnimating()
     }
     
     func setData() {
@@ -26,6 +28,8 @@ class WeatherViewController: UIViewController {
                 self.weatherDatas = weatherData
                 DispatchQueue.main.async {
                     self.weatherTableView.reloadData()
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.isHidden = true
                 }
             case .failure(let error):
                 print("Error: \(error.localizedDescription)")

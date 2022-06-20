@@ -82,18 +82,24 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="lch-lD-EY3">
+                                <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="B0U-4a-bIr" secondAttribute="bottom" id="6jA-l8-dQc"/>
                             <constraint firstItem="B0U-4a-bIr" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="gm2-AU-Jfn"/>
+                            <constraint firstItem="lch-lD-EY3" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="miD-YF-2hv"/>
                             <constraint firstItem="B0U-4a-bIr" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="nKT-a7-5VT"/>
                             <constraint firstItem="B0U-4a-bIr" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="pNl-HX-fz7"/>
+                            <constraint firstItem="lch-lD-EY3" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="rMQ-XG-Y1O"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="지역별 날씨" id="Wam-GI-Mcu"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="lch-lD-EY3" id="N7P-xr-zda"/>
                         <outlet property="weatherTableView" destination="B0U-4a-bIr" id="ziB-Qj-97L"/>
                         <segue destination="3PX-t1-DfE" kind="show" identifier="goToDetail" id="Foa-tP-KdL"/>
                     </connections>
