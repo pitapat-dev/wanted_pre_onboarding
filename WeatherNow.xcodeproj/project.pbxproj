@@ -13,6 +13,7 @@
 		12584DC92860441A00DD71E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12584DC82860441A00DD71E8 /* Assets.xcassets */; };
 		12584DCC2860441A00DD71E8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12584DCA2860441A00DD71E8 /* LaunchScreen.storyboard */; };
 		12584DD42860444800DD71E8 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12584DD32860444800DD71E8 /* WeatherViewController.swift */; };
+		12584DD6286045A600DD71E8 /* WeatherAPIKey.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12584DD5286045A600DD71E8 /* WeatherAPIKey.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		12584DCB2860441A00DD71E8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		12584DCD2860441A00DD71E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12584DD32860444800DD71E8 /* WeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
+		12584DD5286045A600DD71E8 /* WeatherAPIKey.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = WeatherAPIKey.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				12584DBF2860441900DD71E8 /* AppDelegate.swift */,
 				12584DC12860441900DD71E8 /* SceneDelegate.swift */,
 				12584DC52860441900DD71E8 /* Main.storyboard */,
+				12584DD5286045A600DD71E8 /* WeatherAPIKey.plist */,
 				12584DD32860444800DD71E8 /* WeatherViewController.swift */,
 				12584DC82860441A00DD71E8 /* Assets.xcassets */,
 				12584DCA2860441A00DD71E8 /* LaunchScreen.storyboard */,
@@ -125,6 +128,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12584DD6286045A600DD71E8 /* WeatherAPIKey.plist in Resources */,
 				12584DCC2860441A00DD71E8 /* LaunchScreen.storyboard in Resources */,
 				12584DC92860441A00DD71E8 /* Assets.xcassets in Resources */,
 				12584DC72860441900DD71E8 /* Main.storyboard in Resources */,
