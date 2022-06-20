@@ -21,7 +21,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="80" id="unn-gr-Hv7">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="WeatherTableViewCell" rowHeight="80" id="unn-gr-Hv7" customClass="WeatherTableViewCell" customModule="WeatherNow" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="44.5" width="414" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="unn-gr-Hv7" id="GuB-oq-eai">
@@ -75,10 +75,10 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="cityNameLabel" destination="hqT-GJ-2aR" id="YVG-sA-bfL"/>
-                                            <outlet property="currentTempLabel" destination="M4F-o1-NjM" id="gXg-6B-alY"/>
-                                            <outlet property="humidityLabel" destination="NpU-V0-q77" id="mXo-nA-2Sw"/>
-                                            <outlet property="weatherIconImageView" destination="Exs-w2-g3W" id="y9c-mD-hBQ"/>
+                                            <outlet property="cityNameLabel" destination="hqT-GJ-2aR" id="mvr-hX-ecB"/>
+                                            <outlet property="currentTempLabel" destination="M4F-o1-NjM" id="5Bi-hX-WGL"/>
+                                            <outlet property="humidityLabel" destination="NpU-V0-q77" id="vR8-Fj-m9d"/>
+                                            <outlet property="weatherIconImageView" destination="Exs-w2-g3W" id="rmX-cA-WN2"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -87,10 +87,14 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="Wam-GI-Mcu"/>
+                    <connections>
+                        <outlet property="weatherTableView" destination="B0U-4a-bIr" id="ziB-Qj-97L"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="20" y="94"/>
+            <point key="canvasLocation" x="928.98550724637687" y="93.75"/>
         </scene>
     </scenes>
     <resources>
