@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WeatherDetailViewController: UITableViewController {
+final class WeatherDetailViewController: UITableViewController {
     
     @IBOutlet weak var weatherIconImageView: UIImageView!
     @IBOutlet weak var descriptionLabel: UILabel!
@@ -27,7 +27,7 @@ class WeatherDetailViewController: UITableViewController {
         setTableView()
     }
     
-    func setTableView() {
+    private func setTableView() {
         guard let weather = weatherDetail else { return }
         self.title = weatherDataManager.getCityName(of: weather)
         self.currentTempCell.detailTextLabel?.text = weatherDataManager.getCurrentTemp(of: weather)

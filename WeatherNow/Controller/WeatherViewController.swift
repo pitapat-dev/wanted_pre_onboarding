@@ -7,11 +7,11 @@
 
 import UIKit
 
-class WeatherViewController: UIViewController {
+final class WeatherViewController: UIViewController {
     
     @IBOutlet weak var weatherTableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    var weatherDatas: [WeatherData] = []
+    private var weatherDatas: [WeatherData] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,30 +20,31 @@ class WeatherViewController: UIViewController {
         self.activityIndicator.startAnimating()
     }
     
-    func setData() {
+    private func setData() {
         var networkManager = NetworkManager()
         networkManager.delegate = self
         networkManager.fetchWeather()
     }
     
-    func setTableView() {
+    private func setTableView() {
         self.weatherTableView.dataSource = self
         self.weatherTableView.delegate = self
     }
     
-    func showAlert(message: String) {
+    private func showAlert(message: String) {
         let alert = UIAlertController(title: "에러", message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "확인", style: .default, handler: nil)
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
     }
     
-    func stopAndHideActivityIndicator() {
+    private func stopAndHideActivityIndicator() {
         self.activityIndicator.stopAnimating()
         self.activityIndicator.isHidden = true
     }
 }
 
+// MARK: - UITableViewDataSource
 extension WeatherViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -51,13 +52,17 @@ extension WeatherViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherTableViewCell", for: indexPath) as? WeatherTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: CellIdentifier.weatherTableViewCell,
+            for: indexPath) as? WeatherTableViewCell else {
+            return UITableViewCell() }
         let weather = self.weatherDatas[indexPath.row]
         cell.configureCell(with: weather)
         return cell
     }
 }
 
+// MARK: - UITableViewDelegate
 extension WeatherViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -65,17 +70,19 @@ extension WeatherViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "goToDetail", sender: indexPath)
+        performSegue(withIdentifier: SegueIdentifier.goToDetail, sender: indexPath)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "goToDetail" {
-            guard let weatherDetailVC = segue.destination as? WeatherDetailViewController, let indexPath = sender as? IndexPath else { return }
+        if segue.identifier == SegueIdentifier.goToDetail {
+            guard let weatherDetailVC = segue.destination as? WeatherDetailViewController,
+                    let indexPath = sender as? IndexPath else { return }
             weatherDetailVC.weatherDetail = self.weatherDatas[indexPath.row]
         }
     }
 }
 
+// MARK: - NetworkManagerDelegate
 extension WeatherViewController: NetworkManagerDelegate {
     
     func didFailWithError(_ response: HTTPURLResponse) {

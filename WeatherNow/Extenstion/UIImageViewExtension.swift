@@ -7,14 +7,14 @@
 
 import UIKit
 
-let imageCache: NSCache<NSString, UIImage> = NSCache()
+
 
 extension UIImageView {
     
     func loadImage(_ icon: String) {
         let imageURL = "http://openweathermap.org/img/wn/\(icon)@2x.png"
         let url = URL(string: imageURL)!
-        if let cacheImage = imageCache.object(forKey: imageURL as NSString) {
+        if let cacheImage = ImageCache.cache.object(forKey: imageURL as NSString) {
             DispatchQueue.main.async() { [weak self] in
                 self?.image = cacheImage
             }
@@ -22,11 +22,13 @@ extension UIImageView {
         else {
             let session = URLSession(configuration: .default)
             let task = session.dataTask(with: url) { data, response, error in
-                guard let data = data, let response = response as? HTTPURLResponse, error == nil else { return }
+                guard let data = data,
+                        let response = response as? HTTPURLResponse,
+                        error == nil else { return }
                 if response.statusCode == 200 {
                     guard let image = UIImage(data: data) else { return }
                     DispatchQueue.main.async() { [weak self] in
-                        imageCache.setObject(image, forKey: imageURL as NSString)
+                        ImageCache.cache.setObject(image, forKey: imageURL as NSString)
                         self?.image = image
                     }
                 } else {

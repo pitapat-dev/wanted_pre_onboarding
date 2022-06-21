@@ -7,39 +7,16 @@
 
 import Foundation
 
-enum NetworkError: Error {
-    case invalidAPIKey
-    case invalidQueryParameters
-    case surpassingLimitOfAPICalls
-    case serverError
-    
-    var message: String {
-        switch self {
-        case .invalidAPIKey:
-            return "API Key가 아직 활성화되지 않았거나 유효하지 않은 API key입니다."
-        case .invalidQueryParameters:
-            return "Query parameter를 다시 확인해주세요."
-        case .surpassingLimitOfAPICalls:
-            return "API 호출 횟수 한도를 초과했습니다."
-        case .serverError:
-            return "Server 에러가 발생했습니다."
-        }
-    }
-}
-
 protocol NetworkManagerDelegate {
     func didUpdateWeather(with weatherDatas: [WeatherData])
     func didFailWithError(_ response: HTTPURLResponse)
 }
 
 struct NetworkManager {
-    let weatherURL = "https://api.openweathermap.org/data/2.5/group?"
-    let apiKey = Bundle.main.apiKey
-    let queryOption = "units=metric&lang=kr"
     
     var delegate: NetworkManagerDelegate?
   
-    func getCityString() -> String {
+    private func getCityString() -> String {
         var cityArray = [Int]()
         City.allCases.forEach { cityArray.append($0.rawValue) }
         let cityString = cityArray.map { "\($0)"}.joined(separator: ",")
@@ -47,18 +24,20 @@ struct NetworkManager {
     }
     
     func fetchWeather() {
-        let cities = self.getCityString()
-        let urlString = "\(weatherURL)&id=\(cities)&appid=\(apiKey)&\(queryOption)"
+        let cities = "id=\(self.getCityString())"
+        let urlString = "\(WeatherAPI.weatherURL)&\(cities)&\(WeatherAPI.apiKey)&\(WeatherAPI.queryOption)"
         performRequest(with: urlString)
     }
     
-    func performRequest(with urlString: String) {
+    private func performRequest(with urlString: String) {
         guard let url = URL(string: urlString)  else { return }
         
         let session = URLSession(configuration: .default)
         
         let task = session.dataTask(with: url) { data, response, error in
-            guard let data = data, let response = response as? HTTPURLResponse, error == nil else { return }
+            guard let data = data,
+                    let response = response as? HTTPURLResponse,
+                    error == nil else { return }
                 switch response.statusCode {
                 case 200:
                     guard let weatherData = self.parseJSON(data) else { return }
@@ -72,7 +51,7 @@ struct NetworkManager {
         task.resume()
     }
     
-    func parseJSON(_ data: Data) -> [WeatherData]? {
+    private func parseJSON(_ data: Data) -> [WeatherData]? {
         let decoder = JSONDecoder()
         do {
             let decodedData = try decoder.decode(WeatherDataList.self, from: data)
